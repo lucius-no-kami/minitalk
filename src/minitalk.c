@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/08 17:02:38 by luluzuri          #+#    #+#             */
+/*   Updated: 2024/12/08 17:21:20 by luluzuri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 int	minitalk(void)
 {
-	printf("This is the main logic of minitalk!\n");
+	ft_printf("PID: %d\n", getpid());
 	return (0);
 }

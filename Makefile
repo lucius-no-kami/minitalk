@@ -9,21 +9,23 @@
 #																					#
 #-----------------------------------------------------------------------------------#
 
-NAME = minitalk
+CLIENT_NAME = minitalk_client
+SERVER_NAME = minitalk_server
 
 SRCDIR = src
 OBJDIR = obj
 INCDIR = include
 
 # Source Files
-SRC = main.c minitalk.c
+SRC = main.c minitalk.c 
 OBJ = $(SRC:.c=.o)
 SRC := $(addprefix $(SRCDIR)/, $(SRC))
 OBJ := $(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(OBJ))
 
 # Libraries and Linker Flags
-LDFLAGS = 
-LIBS = 
+FT_PRINTF_DIR = ft_printf
+LDFLAGS = -L$(FT_PRINTF_DIR)
+FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
 
 # Archiver
 AR = ar
@@ -49,7 +51,7 @@ RESET   := "\033[0m"
 
 
 # Default Rule
-all: $(OBJDIR) $(NAME)
+all: $(OBJDIR) $(CLIENT_NAME)
 
 # Object Directory Rule
 $(OBJDIR):
@@ -58,6 +60,11 @@ $(OBJDIR):
 # Dependency Files
 DEP = $(OBJ:.o=.d)
 
+# FT_PRINTF
+$(FT_PRINTF):
+	$(V)$(MAKE) --silent -C $(FT_PRINTF_DIR)
+	$(V)echo '[$(CLIENT_NAME)] ft_printf build successfully'
+
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	@mkdir -p $(dir $@)
 	$(V)$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
@@ -65,18 +72,18 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 -include $(DEP)
 
 # Linking Rule
-$(NAME): $(OBJ)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) $(BONUS_OBJ) $(LIBS) $(MLXFLAGS) -o $(NAME)
-	$(V)echo $(GREEN)"[$(NAME)] Executable created ✅"$(RESET)
+$(CLIENT_NAME): $(FT_PRINTF) $(OBJ)
+	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) $(BONUS_OBJ) $(FT_PRINTF) $(MLXFLAGS) -o $(CLIENT_NAME)
+	$(V)echo $(GREEN)"[$(CLIENT_NAME)] Executable created ✅"$(RESET)
 
 # Clean Rules
 clean:
-	$(V)echo $(RED)'[$(NAME)] Cleaning objects'd$(RESET)
+	$(V)echo $(RED)'[$(CLIENT_NAME)] Cleaning objects'd$(RESET)
 	$(V)rm -rf $(OBJDIR)
 
 fclean: clean
-	$(V)echo $(RED)'[$(NAME)] Cleaning all files'$(RESET)
-	$(V)rm -f $(NAME)
+	$(V)echo $(RED)'[$(CLIENT_NAME)] Cleaning all files'$(RESET)
+	$(V)rm -f $(CLIENT_NAME)
 
 re: fclean all
 
