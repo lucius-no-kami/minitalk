@@ -6,20 +6,50 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 09:58:03 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/09 10:02:34 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:33:48 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_server.h"
 
+void	handle_signal(int sig)
+{
+	ft_printf("Sig num: %d\n", sig);
+	if (sig == SIGINT)
+	{
+		ft_printf("\nReceived SIGINT, exiting...\n");
+		exit(0);
+	}
+}
+
 int	minitalk_server(void)
 {
-	ft_printf("Test server.");
+	struct sigaction	sa;
+
+	ft_printf("Test server.\n");
+	sa.sa_handler = handle_signal;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
+	}
+	while (1)
+		pause();
 	return (0);
 }
 
 int	main(void)
 {
+	ft_printf(CYAN"\n\
+███╗   ███╗██╗███╗   ██╗██╗████████╗ █████╗ ██╗     ██╗  ██╗    ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗ \n\
+████╗ ████║██║████╗  ██║██║╚══██╔══╝██╔══██╗██║     ██║ ██╔╝    ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗\n\
+██╔████╔██║██║██╔██╗ ██║██║   ██║   ███████║██║     █████╔╝     ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝\n\
+██║╚██╔╝██║██║██║╚██╗██║██║   ██║   ██╔══██║██║     ██╔═██╗     ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██╔══╝  ██╔══██╗\n\
+██║ ╚═╝ ██║██║██║ ╚████║██║   ██║   ██║  ██║███████╗██║  ██╗    ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║\n\
+╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝\n\
+"RESET);
 	minitalk_server();
 	return (0);
 }
