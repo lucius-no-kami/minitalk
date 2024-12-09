@@ -29,4 +29,5 @@ cmake_install.cmake
 *.log
 
 # Customize Executable Makefile
-minitalk_*
+minitalk_client
+minitalk_server
