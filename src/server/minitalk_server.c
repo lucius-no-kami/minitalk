@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 09:58:03 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/09 18:33:48 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:10:16 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	handle_signal(int sig)
 {
 	ft_printf("Sig num: %d\n", sig);
-	if (sig == SIGINT)
+	if (sig == SIGUSR1)
 	{
-		ft_printf("\nReceived SIGINT, exiting...\n");
+		ft_printf("\nReceived SIGUSR1, exiting...\n");
 		exit(0);
 	}
 }
@@ -26,17 +26,18 @@ int	minitalk_server(void)
 {
 	struct sigaction	sa;
 
-	ft_printf("Test server.\n");
 	sa.sa_handler = handle_signal;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
-	}
 	while (1)
+	{
+		if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		{
+			perror("sigaction");
+			exit(EXIT_FAILURE);
+		}
 		pause();
+	}
 	return (0);
 }
 
@@ -50,6 +51,7 @@ int	main(void)
 ██║ ╚═╝ ██║██║██║ ╚████║██║   ██║   ██║  ██║███████╗██║  ██╗    ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║\n\
 ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝\n\
 "RESET);
+	ft_printf("Server PID: %d\n", getpid());
 	minitalk_server();
 	return (0);
 }
