@@ -14,22 +14,11 @@
 
 char	g_tab[8];
 
-void	handle_signal(int sig)
+void	gestionnaire(int sig_num, siginfo_t *info, void *rien)
 {
-	int	i;
-
-	i = 0;
-	while (g_tab[i])
-		i++;
-	if (sig == SIGUSR1)
-		g_tab[i] = '1';
-	if (sig == SIGUSR2)
-		g_tab[i] = '0';
-	if (sig == SIGINT)
-	{
-		ft_printf("\nExit successed...\n");
-		exit(EXIT_SUCCESS);
-	}
+	(void)sig_num;
+	(void)rien;
+	ft_printf("Message Received from PID: %d\n", info->si_pid);
 }
 
 void	sigact_checker(struct sigaction *sa)
@@ -87,9 +76,9 @@ int	minitalk_server(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = handle_signal;
-	sa.sa_flags = 0;
+	sa.sa_sigaction = gestionnaire;
 	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_SIGINFO;
 	sigact_checker(&sa);
 	while (1)
 	{

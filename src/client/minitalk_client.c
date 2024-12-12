@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:02:38 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/12 10:28:41 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/12 11:19:46 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	mod_atoi(char *str)
 
 int	main(int ac, char **av)
 {
-	ft_printf("Test\n");
+	ft_printf("Client PID: %d\n", getpid());
 	if (ac != 3)
 	{
 		ft_printf("Usage: %s <PID_server> <message>", av[0]);
