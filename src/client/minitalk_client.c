@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:02:38 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/10 11:41:41 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/12 10:28:41 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,50 @@ void	handle_signal(int sig)
 	ft_printf("\nSignal %d handled.\n", sig);
 }
 
-int	minitalk(int server_pid)
+void	send_bit(int server_pid, char c)
 {
-	struct sigaction	sa;
+	int		i;
 
-	sa.sa_handler = handle_signal;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	i = 8;
+	while (i--)
 	{
-		perror("Erreur sigaction");
-		exit(EXIT_FAILURE);
+		if ((c >> i) & 1)
+			kill(server_pid, SIGUSR1);
+		else
+			kill(server_pid, SIGUSR2);
+		usleep(10);
 	}
-	if (kill(server_pid, SIGUSR1) == -1)
+}
+
+int	minitalk(int server_pid, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		perror("Erreur kill");
-		exit(EXIT_FAILURE);
+		send_bit(server_pid, str[i]);
+		usleep(5);
+		i++;
 	}
 	return (0);
+}
+
+int	mod_atoi(char *str)
+{
+	unsigned int	pid;
+	int				i;
+
+	pid = 0;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		pid = pid * 10 + (str[i] - 48);
+		i++;
+	}
+	return (pid);
 }
 
 int	main(int ac, char **av)
@@ -45,6 +71,6 @@ int	main(int ac, char **av)
 		ft_printf("Usage: %s <PID_server> <message>", av[0]);
 		exit(EXIT_FAILURE);
 	}
-	minitalk(atoi(av[1]));
+	minitalk(mod_atoi(av[1]), av[2]);
 	return (0);
 }

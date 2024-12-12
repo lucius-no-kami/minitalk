@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:02:35 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/10 11:39:42 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/12 10:17:22 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@
 # define RESET          "\033[0m"
 
 /************** MINITALK **************/
-int	minitalk(int server_pid);
+int	minitalk(int server_pid, char *str);
 
 #endif
