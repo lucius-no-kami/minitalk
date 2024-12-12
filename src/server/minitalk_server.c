@@ -12,13 +12,22 @@
 
 #include "minitalk_server.h"
 
-char	g_tab[8];
+int	g_pid;
 
 void	gestionnaire(int sig_num, siginfo_t *info, void *rien)
 {
-	(void)sig_num;
 	(void)rien;
-	ft_printf("Message Received from PID: %d\n", info->si_pid);
+	ft_printf("\nMessage Received from PID: %d\n", info->si_pid);
+	if (sig_num == SIGUSR1)
+		g_pid = info->si_pid;
+	else if (sig_num == SIGUSR2)
+		g_pid = -info->si_pid;
+	if (sig_num == SIGINT)
+	{
+		ft_printf("Exciting signal recieved...\n");
+		exit(EXIT_SUCCESS);
+	}
+	ft_printf("PID Client test: %d\n", (g_pid > 0));
 }
 
 void	sigact_checker(struct sigaction *sa)
@@ -40,38 +49,6 @@ void	sigact_checker(struct sigaction *sa)
 	}
 }
 
-int	reveice_all_bit(void)
-{
-	int	i;
-
-	i = 0;
-	while (g_tab[i])
-		i++;
-	if (i == 8)
-		return (1);
-	return (0);
-}
-
-void	convert_and_print(void)
-{
-	unsigned char	c;
-	int				i;
-
-	i = 0;
-	c = 0;
-	while (i < 8)
-	{
-		c <<= 1;
-		if (g_tab[i] == '1')
-			c |= 1;
-		i++;
-	}
-	ft_printf("%c", c);
-	i = -1;
-	while (g_tab[++i])
-		g_tab[i] = 0;
-}
-
 int	minitalk_server(void)
 {
 	struct sigaction	sa;
@@ -83,11 +60,6 @@ int	minitalk_server(void)
 	while (1)
 	{
 		pause();
-		if (reveice_all_bit())
-		{
-			convert_and_print();
-			ft_printf("\n");
-		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:02:38 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/12 11:19:46 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:29:45 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	send_bit(int server_pid, char c)
 			kill(server_pid, SIGUSR1);
 		else
 			kill(server_pid, SIGUSR2);
-		usleep(10);
+		usleep(500);
 	}
 }
 
