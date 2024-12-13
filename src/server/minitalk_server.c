@@ -14,20 +14,55 @@
 
 int	g_pid;
 
+void	show_char(char *tab)
+{
+	int		i;
+	char	c;
+
+	i = 0;
+	c = 0;
+	while (i < 8)
+	{
+		c <<= 1;
+		if (tab[i] == 1)
+			c |= 1;
+		i++;
+	}
+	ft_printf("%c", c);
+}
+
+void	check_pid(int entring_pid)
+{
+	static char	tab[8];
+	static int	i = 0;
+
+	if (entring_pid != g_pid)
+	{
+		kill(g_pid, SIGINT);
+	}
+	g_pid = entring_pid;
+	if (g_pid > 0)
+		tab[i] = 1;
+	else
+		tab[i] = 0;
+	i++;
+	if (i == 8)
+		show_char(tab);
+}
+
 void	gestionnaire(int sig_num, siginfo_t *info, void *rien)
 {
 	(void)rien;
 	ft_printf("\nMessage Received from PID: %d\n", info->si_pid);
 	if (sig_num == SIGUSR1)
-		g_pid = info->si_pid;
+		check_pid(info->si_pid);
 	else if (sig_num == SIGUSR2)
-		g_pid = -info->si_pid;
+		check_pid(-info->si_pid);
 	if (sig_num == SIGINT)
 	{
 		ft_printf("Exciting signal recieved...\n");
 		exit(EXIT_SUCCESS);
 	}
-	ft_printf("PID Client test: %d\n", (g_pid > 0));
 }
 
 void	sigact_checker(struct sigaction *sa)
