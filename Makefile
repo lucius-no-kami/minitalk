@@ -9,16 +9,16 @@
 #																					#
 #-----------------------------------------------------------------------------------#
 
-CLIENT_NAME = minitalk_client
-SERVER_NAME = minitalk_server
+CLIENT_NAME = client
+SERVER_NAME = server
 
 SRCDIR = src
 OBJDIR = obj
 INCDIR = include
 
 # Source Files
-SRC_CLIENT = client/minitalk_client.c
-SRC_SERVER = server/minitalk_server.c
+SRC_CLIENT = utils.c client/client.c
+SRC_SERVER = utils.c server/server.c
 
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
@@ -31,9 +31,9 @@ SRC_SERVER := $(addprefix $(SRCDIR)/, $(SRC_SERVER))
 OBJ_SERVER := $(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(OBJ_SERVER))
 
 # Libraries and Linker Flags
-FT_PRINTF_DIR = ft_printf
-LDFLAGS = -L$(FT_PRINTF_DIR)
-FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
+libft = libft
+LDFLAGS = -L$(libft)
+LIBFT = $(libft)/libft.a
 
 # Archiver
 AR = ar
@@ -69,10 +69,10 @@ $(OBJDIR):
 DEP_CLIENT = $(OBJ_CLIENT:.o=.d)
 DEP_SERVER = $(OBJ_SERVER:.o=.d)
 
-# FT_PRINTF
-$(FT_PRINTF):
-	$(V)$(MAKE) --silent -C $(FT_PRINTF_DIR)
-	$(V)echo '[$(CLIENT_NAME)] ft_printf build successfully'
+# LIBFT
+$(LIBFT):
+	$(V)$(MAKE) --silent -C $(libft)
+	$(V)echo '[$(CLIENT_NAME)] LIBFT build successfully'
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	@mkdir -p $(dir $@)
@@ -82,12 +82,12 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 -include $(DEP_SERVER)
 
 # Linking Rule
-$(CLIENT_NAME): $(FT_PRINTF) $(OBJ_CLIENT)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_CLIENT) $(BONUS_OBJ) $(FT_PRINTF) $(MLXFLAGS) -o $(CLIENT_NAME)
+$(CLIENT_NAME): $(LIBFT) $(OBJ_CLIENT)
+	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_CLIENT) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(CLIENT_NAME)
 	$(V)echo $(GREEN)"[$(CLIENT_NAME)] Executable created ✅"$(RESET)
 
-$(SERVER_NAME): $(FT_PRINTF) $(OBJ_SERVER)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_SERVER) $(BONUS_OBJ) $(FT_PRINTF) $(MLXFLAGS) -o $(SERVER_NAME)
+$(SERVER_NAME): $(LIBFT) $(OBJ_SERVER)
+	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_SERVER) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(SERVER_NAME)
 	$(V)echo $(GREEN)"[$(SERVER_NAME)] Executable created ✅"$(RESET)
 
 # Clean Rules
@@ -97,7 +97,7 @@ clean:
 
 fclean: clean
 	$(V)echo $(RED)'[$(CLIENT_NAME)] Cleaning all files'$(RESET)
-	$(V)$(MAKE) --silent -C $(FT_PRINTF_DIR) fclean
+	$(V)$(MAKE) --silent -C $(libft) fclean
 	$(V)rm -f $(CLIENT_NAME)
 	$(V)echo $(RED)'[$(SERVER_NAME)] Cleaning all files'$(RESET)
 	$(V)rm -f $(SERVER_NAME)

@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 14:55:17 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/11/24 14:02:48 by luluzuri         ###   ########.fr       */
+/*   Created: 2024/11/09 09:02:49 by lucius            #+#    #+#             */
+/*   Updated: 2024/11/12 13:40:24 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-
-int		ft_printf(const char *format, ...);
-int		pf_putchar(char c);
-int		pf_putstr(char *str);
-int		pf_putnbr(long n);
-void	pf_puthex(char c, int *count, unsigned long n);
-void	pf_putadr(void *adr, int *count);
-
-#endif
+int	ft_isprint(int c)
+{
+	if (c >= 32 && c <= 126)
+		return (1);
+	return (0);
+}
