@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:02:38 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/14 13:16:33 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:35:15 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	send_char(int pid, char *str)
 			if (c == 0)
 				kill(pid, SIGUSR2);
 			ft_printf("%d", c);
-			sleep(1);
+			sleep(5);
 			while (!g_received_from_server)
 			{
 			}

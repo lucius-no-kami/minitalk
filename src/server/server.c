@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 10:51:30 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/14 13:38:25 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:37:57 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,44 +31,49 @@ void	init_char(t_pchar *c)
 {
 	c->bits = 0;
 	c->stored_bits = malloc(8);
+	if (!c->stored_bits)
+		return ;
 	ft_bzero(c->stored_bits, 8);
 }
 
-void	print_char(t_pchar *c)
+void	print_char(char *str)
 {
 	char	result;
+	int		i;
 
 	result = 0;
-	while (c->bits)
+	i = 7;
+	while (i >= 0)
 	{
 		result <<= 1;
-		if (c->stored_bits[c->bits] == 1)
+		if (str[i] == '1')
 			result |= 1;
-		c->bits--;
+		i--;
 	}
 	ft_printf("%c", result);
 }
 
 void	char_maj(t_pchar *c, int checked_pid)
 {
+
 	if (g_pid > 0)
 	{
-		c->bits++;
 		c->stored_bits[c->bits] = '1';
+		c->bits++;
 		if (c->bits == 8)
 		{
-			print_char(c);
+			print_char(c->stored_bits);
 			init_char(c);
 		}
 		kill(checked_pid, SIGUSR1);
 	}
 	else
 	{
-		c->bits++;
 		c->stored_bits[c->bits] = '0';
+		c->bits++;
 		if (c->bits == 8)
 		{
-			print_char(c);
+			print_char(c->stored_bits);
 			init_char(c);
 		}
 		kill(-checked_pid, SIGUSR1);
@@ -77,8 +82,8 @@ void	char_maj(t_pchar *c, int checked_pid)
 
 int	main(void)
 {
-	static t_pchar	c;
-	int				checked_pid;
+	t_pchar	c;
+	int		checked_pid;
 
 	set_sigact();
 	starting_server();
@@ -91,7 +96,7 @@ int	main(void)
 			checked_pid = g_pid;
 			char_maj(&c, checked_pid);
 		}
-		sleep(2);
+		sleep(1);
 	}
 	return (0);
 }
