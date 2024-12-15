@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 10:51:30 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/14 16:37:57 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/15 09:00:28 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ void	signal_handler(int signum, siginfo_t *info, void *oldact)
 {
 	(void)oldact;
 	(void)info;
-	g_pid = info->si_pid;
 	if (signum == SIGUSR1)
 		g_pid = info->si_pid;
 	if (signum == SIGUSR2)
 		g_pid = -info->si_pid;
 	if (signum == SIGINT)
+	{
+		ft_printf(RED"\nClosing server...\n"RESET);
 		exit(EXIT_SUCCESS);
+	}
 }
 
 void	init_char(t_pchar *c)
@@ -51,11 +53,12 @@ void	print_char(char *str)
 		i--;
 	}
 	ft_printf("%c", result);
+	free(str);
+	str = NULL;
 }
 
 void	char_maj(t_pchar *c, int checked_pid)
 {
-
 	if (g_pid > 0)
 	{
 		c->stored_bits[c->bits] = '1';
@@ -85,6 +88,7 @@ int	main(void)
 	t_pchar	c;
 	int		checked_pid;
 
+	checked_pid = 0;
 	set_sigact();
 	starting_server();
 	while (1)
@@ -92,11 +96,17 @@ int	main(void)
 		if (g_pid)
 		{
 			if (checked_pid != g_pid && checked_pid != -g_pid)
+			{
+				if (checked_pid < 0)
+					checked_pid = -checked_pid;
+				if (checked_pid != 0)
+					kill(checked_pid, SIGINT);
 				init_char(&c);
+			}
 			checked_pid = g_pid;
 			char_maj(&c, checked_pid);
 		}
-		sleep(1);
+		usleep(10000);
 	}
 	return (0);
 }

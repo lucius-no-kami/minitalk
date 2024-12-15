@@ -83,11 +83,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 
 # Linking Rule
 $(CLIENT_NAME): $(LIBFT) $(OBJ_CLIENT)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_CLIENT) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(CLIENT_NAME)
+	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_CLIENT) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(CLIENT_NAME) -g3
 	$(V)echo $(GREEN)"[$(CLIENT_NAME)] Executable created ✅"$(RESET)
 
 $(SERVER_NAME): $(LIBFT) $(OBJ_SERVER)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_SERVER) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(SERVER_NAME)
+	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_SERVER) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(SERVER_NAME) -g3
 	$(V)echo $(GREEN)"[$(SERVER_NAME)] Executable created ✅"$(RESET)
 
 # Clean Rules
