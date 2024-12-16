@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 10:51:30 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/15 09:00:28 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/16 09:43:55 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,15 @@ void	signal_handler(int signum, siginfo_t *info, void *oldact)
 
 void	init_char(t_pchar *c)
 {
+	int	i;
+
+	i = -1;
 	c->bits = 0;
 	c->stored_bits = malloc(8);
 	if (!c->stored_bits)
 		return ;
-	ft_bzero(c->stored_bits, 8);
+	while (++i < 8)
+		c->stored_bits[i] = 0;
 }
 
 void	print_char(char *str)
@@ -96,13 +100,7 @@ int	main(void)
 		if (g_pid)
 		{
 			if (checked_pid != g_pid && checked_pid != -g_pid)
-			{
-				if (checked_pid < 0)
-					checked_pid = -checked_pid;
-				if (checked_pid != 0)
-					kill(checked_pid, SIGINT);
 				init_char(&c);
-			}
 			checked_pid = g_pid;
 			char_maj(&c, checked_pid);
 		}
