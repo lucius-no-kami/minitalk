@@ -1,9 +1,0 @@
-ToDo:
-
-Each time the server receiving a signal from client he has to compare previous PID with the signal PID
-if the PID is different we need to reset everything and start at 0 with the new PID.
-
-The client will need to handle a response from the server before sending another bit. SIGUSR1 will be
-used as "everythings good" response from the server, SIGUSR2 will be used as a "lost signal" response.
-
-If a "lost signal" response is receive by the client, the program will need to resend the lost bit.
