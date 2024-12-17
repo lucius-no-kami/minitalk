@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:02:38 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/15 08:51:50 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/17 07:53:43 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	send_char(int pid, char *str)
 	while (str[++i])
 	{
 		j = 0;
-		ft_printf("[");
 		while (j < 8)
 		{
 			c = (str[i] >> j++) & 1;
@@ -48,13 +47,34 @@ void	send_char(int pid, char *str)
 				kill(pid, SIGUSR1);
 			if (c == 0)
 				kill(pid, SIGUSR2);
-			ft_printf("%d", c);
 			while (!g_received_from_server)
 			{
 			}
 		}
-		ft_printf("] -> %c\n", str[i]);
 	}
+}
+
+int	ft_atoi(const char *nptr)
+{
+	int	sign;
+	int	result;
+
+	sign = 1;
+	result = 0;
+	while (*nptr == 32 || (*nptr >= 9 && *nptr <= 13))
+		nptr++;
+	if (*nptr == '-' || *nptr == '+')
+	{
+		if (*nptr == '-')
+			sign = -sign;
+		nptr++;
+	}
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		result = result * 10 + (*nptr - 48);
+		nptr++;
+	}
+	return (result * sign);
 }
 
 int	main(int ac, char **av)

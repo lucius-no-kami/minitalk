@@ -31,9 +31,9 @@ SRC_SERVER := $(addprefix $(SRCDIR)/, $(SRC_SERVER))
 OBJ_SERVER := $(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(OBJ_SERVER))
 
 # Libraries and Linker Flags
-libft = libft
-LDFLAGS = -L$(libft)
-LIBFT = $(libft)/libft.a
+ft_printf = ft_printf
+LDFLAGS = -L$(ft_printf)
+FT_PRINTF = $(ft_printf)/libftprintf.a
 
 # Archiver
 AR = ar
@@ -69,10 +69,10 @@ $(OBJDIR):
 DEP_CLIENT = $(OBJ_CLIENT:.o=.d)
 DEP_SERVER = $(OBJ_SERVER:.o=.d)
 
-# LIBFT
-$(LIBFT):
-	$(V)$(MAKE) --silent -C $(libft)
-	$(V)echo '[$(CLIENT_NAME)] LIBFT build successfully'
+# FT_PRINTF
+$(FT_PRINTF):
+	$(V)$(MAKE) --silent -C $(ft_printf)
+	$(V)echo '[$(CLIENT_NAME)] FT_PRINTF build successfully'
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	@mkdir -p $(dir $@)
@@ -82,12 +82,12 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 -include $(DEP_SERVER)
 
 # Linking Rule
-$(CLIENT_NAME): $(LIBFT) $(OBJ_CLIENT)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_CLIENT) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(CLIENT_NAME) -g3
+$(CLIENT_NAME): $(FT_PRINTF) $(OBJ_CLIENT)
+	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_CLIENT) $(BONUS_OBJ) $(FT_PRINTF) $(MLXFLAGS) -o $(CLIENT_NAME) -g3
 	$(V)echo $(GREEN)"[$(CLIENT_NAME)] Executable created ✅"$(RESET)
 
-$(SERVER_NAME): $(LIBFT) $(OBJ_SERVER)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_SERVER) $(BONUS_OBJ) $(LIBFT) $(MLXFLAGS) -o $(SERVER_NAME) -g3
+$(SERVER_NAME): $(FT_PRINTF) $(OBJ_SERVER)
+	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ_SERVER) $(BONUS_OBJ) $(FT_PRINTF) $(MLXFLAGS) -o $(SERVER_NAME) -g3
 	$(V)echo $(GREEN)"[$(SERVER_NAME)] Executable created ✅"$(RESET)
 
 # Clean Rules
@@ -97,7 +97,7 @@ clean:
 
 fclean: clean
 	$(V)echo $(RED)'[$(CLIENT_NAME)] Cleaning all files'$(RESET)
-	$(V)$(MAKE) --silent -C $(libft) fclean
+	$(V)$(MAKE) --silent -C $(ft_printf) fclean
 	$(V)rm -f $(CLIENT_NAME)
 	$(V)echo $(RED)'[$(SERVER_NAME)] Cleaning all files'$(RESET)
 	$(V)rm -f $(SERVER_NAME)

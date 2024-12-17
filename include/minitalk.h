@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:21:30 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/16 08:48:58 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/17 07:52:50 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <signal.h>
-# include "../libft/libft.h"
+# include "../ft_printf/ft_printf.h"
 /* #include "mlx.h" */
 
 /* colors */
@@ -32,7 +32,7 @@
 typedef struct s_pchar
 {
 	int		bits;
-	char	*stored_bits;
+	char	stored_bits[8];
 }	t_pchar;
 
 void	set_sigact(void);

@@ -6,7 +6,7 @@
 /*   By: luluzuri <luluzuri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 10:51:30 by luluzuri          #+#    #+#             */
-/*   Updated: 2024/12/16 09:43:55 by luluzuri         ###   ########.fr       */
+/*   Updated: 2024/12/17 08:09:35 by luluzuri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ void	init_char(t_pchar *c)
 
 	i = -1;
 	c->bits = 0;
-	c->stored_bits = malloc(8);
-	if (!c->stored_bits)
-		return ;
 	while (++i < 8)
 		c->stored_bits[i] = 0;
 }
@@ -57,8 +54,6 @@ void	print_char(char *str)
 		i--;
 	}
 	ft_printf("%c", result);
-	free(str);
-	str = NULL;
 }
 
 void	char_maj(t_pchar *c, int checked_pid)
@@ -95,6 +90,7 @@ int	main(void)
 	checked_pid = 0;
 	set_sigact();
 	starting_server();
+	init_char(&c);
 	while (1)
 	{
 		if (g_pid)
@@ -104,7 +100,7 @@ int	main(void)
 			checked_pid = g_pid;
 			char_maj(&c, checked_pid);
 		}
-		usleep(10000);
+		usleep(100000);
 	}
 	return (0);
 }
